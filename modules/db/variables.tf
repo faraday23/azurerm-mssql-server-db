@@ -107,8 +107,17 @@ variable "automatic_tuning" {
   type        = number
 }
 
-
 variable "database_wait_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "query_store_runtime_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "query_store_wait_statistics" {
   description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
   type        = number
 }
@@ -123,7 +132,7 @@ variable "sql_insights" {
   type        = number
 }
 
-variable "timeouts" {
+variable "deadlocks" {
   description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
   type        = number
 }
@@ -132,9 +141,13 @@ variable "timeouts" {
   description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
   type        = number
 }
-
 
 variable "metric" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "blocks" {
   description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
   type        = number
 }
