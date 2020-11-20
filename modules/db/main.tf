@@ -23,9 +23,7 @@ module "ds_mssql_server" {
   target_resource_name           = "${var.name}-mssql${var.server_id}"
   ds_allmetrics_rentention_days  = var.metric
 
-  ds_log_api_endpoints = 
-  {
-  "AutomaticTuning"             = var.automatic_tuning,
+  ds_log_api_endpoints = { "AutomaticTuning"             = var.automatic_tuning,
   "Blocks"                      = var.blocks,
   "DatabaseWaitStatistics"      = var.database_wait_statistics,
   "Deadlocks"                   = var.deadlocks,
