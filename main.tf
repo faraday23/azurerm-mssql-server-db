@@ -62,12 +62,12 @@ module "db" {
   log_retention_days = var.log_retention_days
   storage            = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
   #diagnostic log settings
-  AutomaticTuning               = var.automatic_tuning,
-  Blocks                        = var.blocks,
-  DatabaseWaitStatistics        = var.database_wait_statistics,
-  Deadlocks                     = var.deadlocks,
-  Errors                        = var.error_log, 
-  Timeouts                      = var.timeouts,
+  AutomaticTuning               = var.automatic_tuning
+  Blocks                        = var.blocks
+  DatabaseWaitStatistics        = var.database_wait_statistics
+  Deadlocks                     = var.deadlocks
+  Errors                        = var.error_log
+  Timeouts                      = var.timeouts
   QueryStoreRuntimeStatistics   = var.query_store_runtime_statistics
   QueryStoreWaitStatistics      = var.query_store_wait_statistics
   SQLinsights                   = var.sql_insights
