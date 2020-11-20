@@ -12,6 +12,17 @@ resource "azurerm_mssql_database" "db" {
 
   auto_pause_delay_in_minutes = var.sku_name == "GP_S_Gen5_1" ? var.auto_pause_delay_in_minutes : 0
   min_capacity                = var.sku_name == "GP_S_Gen5_1" ? var.min_capacity : 0
+  
+  ds_log_api_endpoints = { "AutomaticTuning" = var.automatic_tuning,
+  "Blocks"                      = var.blocks,
+  "DatabaseWaitStatistics"      = var.database_wait_statistics,
+  "Deadlocks"                   = var.deadlocks,
+  "Errors"                      = var.error_log, 
+  "Timeouts"                    = var.timeouts,
+  "QueryStoreRuntimeStatistics" = var.query_store_runtime_statistics
+  "QueryStoreWaitStatistics"    = var.query_store_wait_statistics
+  "SQLinsights"                 = var.sql_insights
+  }
 }
 
 # Diagnostic setting
@@ -23,16 +34,7 @@ module "ds_mssql_server" {
   target_resource_name           = "${var.name}-mssql${var.server_id}"
   ds_allmetrics_rentention_days  = var.metric
 
-  ds_log_api_endpoints = { "AutomaticTuning"             = var.automatic_tuning,
-  "Blocks"                      = var.blocks,
-  "DatabaseWaitStatistics"      = var.database_wait_statistics,
-  "Deadlocks"                   = var.deadlocks,
-  "Errors"                      = var.error_log, 
-  "Timeouts"                    = var.timeouts,
-  "QueryStoreRuntimeStatistics" = var.query_store_runtime_statistics
-  "QueryStoreWaitStatistics"    = var.query_store_wait_statistics
-  "SQLinsights"                 = var.sql_insights
-  }
+  
 }
 
 
