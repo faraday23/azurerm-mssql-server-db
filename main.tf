@@ -63,14 +63,15 @@ module "db" {
   storage            = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
   #diagnostic log settings
   automatic_tuning               = var.automatic_tuning
-  Blocks                         = var.blocks
+  blocks                         = var.blocks
   database_wait_statistics       = var.database_wait_statistics
-  Deadlocks                      = var.deadlocks
+  deadlocks                      = var.deadlocks
   error_log                      = var.error_log
-  Timeouts                       = var.timeouts
+  timeouts                       = var.timeouts
   query_store_runtime_statistics = var.query_store_runtime_statistics
   query_store_wait_statistics    = var.query_store_wait_statistics
   sql_insights                   = var.sql_insights
+  metric                         = var.metric
 }
 
 # Azure SQL Failover Group - Default is "false" 
