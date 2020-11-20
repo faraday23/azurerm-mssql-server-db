@@ -55,21 +55,22 @@ module "db" {
   zone_redundant     = each.value.zone_redundant
   read_scale         = each.value.read_scale
   read_replica_count = each.value.read_replica_count
+  storage_account_resource_group = var.resource_group_name
 
   audit_log_enabled = var.audit_log_enabled
 
   log_retention_days = var.log_retention_days
   storage            = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
-
-  ds_log_api_endpoints = { "AutomaticTuning" = var.automatic_tuning,
-  "Blocks"                      = var.blocks,
-  "DatabaseWaitStatistics"      = var.database_wait_statistics,
-  "Deadlocks"                   = var.deadlocks,
-  "Errors"                      = var.error_log, 
-  "Timeouts"                    = var.timeouts,
-  "QueryStoreRuntimeStatistics" = var.query_store_runtime_statistics
-  "QueryStoreWaitStatistics"    = var.query_store_wait_statistics
-  "SQLinsights"                 = var.sql_insights
+  #diagnostic log settings
+  AutomaticTuning               = var.automatic_tuning,
+  Blocks                        = var.blocks,
+  DatabaseWaitStatistics        = var.database_wait_statistics,
+  Deadlocks                     = var.deadlocks,
+  Errors                        = var.error_log, 
+  Timeouts                      = var.timeouts,
+  QueryStoreRuntimeStatistics   = var.query_store_runtime_statistics
+  QueryStoreWaitStatistics      = var.query_store_wait_statistics
+  SQLinsights                   = var.sql_insights
   }
 }
 
