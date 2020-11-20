@@ -12,6 +12,16 @@ resource "azurerm_mssql_database" "db" {
 
   auto_pause_delay_in_minutes = var.sku_name == "GP_S_Gen5_1" ? var.auto_pause_delay_in_minutes : 0
   min_capacity                = var.sku_name == "GP_S_Gen5_1" ? var.min_capacity : 0
+}
+
+# Diagnostic setting
+module "ds_mssql_db" {
+  source                         = "github.com/faraday23/terraform-azurerm-monitor-diagnostic-setting.git"
+  storage_account                = var.storage_endpoint
+  sa_resource_group              = var.storage_account_resource_group
+  target_resource_id             = azurerm_mssql_database.db.id
+  target_resource_name           = "${var.name}-mssql${var.server_id}"
+  ds_allmetrics_rentention_days  = var.metric
   
   ds_log_api_endpoints = { "AutomaticTuning" = var.automatic_tuning,
   "Blocks"                      = var.blocks,
@@ -23,18 +33,6 @@ resource "azurerm_mssql_database" "db" {
   "QueryStoreWaitStatistics"    = var.query_store_wait_statistics
   "SQLinsights"                 = var.sql_insights
   }
-}
-
-# Diagnostic setting
-module "ds_mssql_server" {
-  source                         = "github.com/faraday23/terraform-azurerm-monitor-diagnostic-setting.git"
-  storage_account                = var.storage_endpoint
-  sa_resource_group              = var.storage_account_resource_group
-  target_resource_id             = azurerm_mssql_database.db.id
-  target_resource_name           = "${var.name}-mssql${var.server_id}"
-  ds_allmetrics_rentention_days  = var.metric
-
-  
 }
 
 
