@@ -6,8 +6,14 @@ locals {
   replica_enabled  = var.create_mode == "Replica"
 }
 
+resource "random_string" "random" {
+  length  = 24
+  upper   = false
+  special = false
+}
+
 resource "azurerm_storage_account" "sa" {
-  name                     = format("%s%ssa%02s", var.names.product_name, var.names.environment, 1)
+  name                     = random_string.random.result
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = "Standard"
