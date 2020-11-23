@@ -66,7 +66,8 @@ module "db" {
   audit_log_enabled = var.audit_log_enabled
 
   log_retention_days = var.log_retention_days
-  storage            = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
+  storage   = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
+  storage_endpoint   = var.storage.endpoint
   #diagnostic log settings
   automatic_tuning               = var.automatic_tuning
   blocks                         = var.blocks
