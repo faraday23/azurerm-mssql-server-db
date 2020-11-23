@@ -94,7 +94,6 @@ variable "read_replica_count" {
 variable "storage_endpoint" {
     description = "This blob storage will hold all Threat Detection audit logs. Required if state is Enabled."
     type        = string
-    default     = ""
 }
 
 variable "storage_account_resource_group" {
