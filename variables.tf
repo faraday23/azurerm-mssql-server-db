@@ -112,6 +112,11 @@ variable "ad_admin_login_name" {
   default     = ""
 }
 
+variable "storage" {
+  description = "storage account options."
+  type        = string
+}
+
 ##
 # Optional Parameters
 ##
