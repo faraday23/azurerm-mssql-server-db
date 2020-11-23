@@ -45,7 +45,6 @@ module "server" {
   #  endpoint     = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_blob_endpoint"]
   #  access_key   = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_access_key"]
   #  is_secondary = count.index == 1
-  }
 }
 
 # SQL Server Database within a SQL Server Server
