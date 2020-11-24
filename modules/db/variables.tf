@@ -35,12 +35,12 @@ variable "log_retention_days" {
 ##########
 # Storage 
 ##########
-variable "storage" {
-  description = "Specifies the identifier key of the Threat Detection audit storage account. Required if retention is Enabled."
-  type        = object({ endpoint = string, access_key = string })
+#variable "storage" {
+#  description = "Specifies the identifier key of the Threat Detection audit storage account. Required if retention is Enabled."
+#  type        = object({ endpoint = string, access_key = string })
 
-  default = { "endpoint" = "", "access_key" = "" }
-}
+#  default = { "endpoint" = "", "access_key" = "" }
+#}
 
 variable "collation" {
   description = "Specifies the collation of the database. Changing this forces a new resource to be created."
@@ -91,10 +91,10 @@ variable "read_replica_count" {
 # Diagnostic setting variable
 ##
 
-variable "storage_endpoint" {
-    description = "This blob storage will hold all Threat Detection audit logs. Required if state is Enabled."
-    type        = string
-}
+#variable "storage_endpoint" {
+#    description = "This blob storage will hold all Threat Detection audit logs. Required if state is Enabled."
+#    type        = string
+#}
 
 variable "storage_account_resource_group" {
   description = "Azure resource group where the storage account resides."
