@@ -1,4 +1,4 @@
-#
+##
 # Required parameters
 ##
 
@@ -32,16 +32,6 @@ variable "server_id" {
   type        = string
 }
 
-#variable "storage_access_key" {
-#  description = "storage account access key to be used"
-#  type        = string
-#}
-
-#variable "storage_endpoint" {
-#  description = "storage endpoint to be used"
-#  type        = string
-#}
-
 ##########
 # Flags
 ##########
@@ -73,6 +63,7 @@ variable "enable_active_directory_administrator" {
 ##########
 # Optional 
 ##########
+
 variable "sql_version" {
   description = "SQL Server version"
   type        = string

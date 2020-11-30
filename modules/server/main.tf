@@ -50,25 +50,3 @@ resource "azurerm_sql_firewall_rule" "access_list" {
   end_ip_address      = each.value.end_ip_address
 }
 
-
-###
-# Policies
-###
-#resource "azurerm_mssql_server_extended_auditing_policy" "auditing" {
-#  count                                   = var.enable_extended_auditing_policy ? 1 : 0
-#  server_id                               = azurerm_mssql_server.instance.id
-#  storage_account_access_key              = var.storage_access_key
-#  storage_account_access_key_is_secondary = var.is_secondary
-#  retention_in_days                       = var.log_retention_days
-#}
-
-# SQL Server Security Alert Policy
-#resource "azurerm_mssql_server_security_alert_policy" "alert" {
-#  count                      = var.enable_threat_detection_policy ? 1 : 0
-#  resource_group_name        = var.resource_group_name
-#  server_name                = azurerm_mssql_server.instance.name
-#  state                      = "Enabled"
-#  storage_endpoint           = var.storage_endpoint
-#  storage_account_access_key = var.storage_access_key
-#  retention_days             = var.log_retention_days
-#}
