@@ -27,6 +27,21 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "server_id" {
+  description = "name of server applied to resources"
+  type        = string
+}
+
+#variable "storage_access_key" {
+#  description = "storage account access key to be used"
+#  type        = string
+#}
+
+#variable "storage_endpoint" {
+#  description = "storage endpoint to be used"
+#  type        = string
+#}
+
 ##########
 # Flags
 ##########
