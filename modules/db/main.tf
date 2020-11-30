@@ -14,10 +14,24 @@ resource "azurerm_mssql_database" "db" {
   min_capacity                = var.sku_name == "GP_S_Gen5_1" ? var.min_capacity : 0
 }
 
-# resource "azurerm_mssql_database_extended_auditing_policy" "db" {
-#   count                      = var.audit_log_enabled ? 1 : 0
-#   database_id                = azurerm_mssql_database.db.id
-#   storage_endpoint           = var.storage.endpoint
-#   storage_account_access_key = var.storage.access_key
-#   retention_in_days          = var.log_retention_days
-# }
+# Diagnostic setting
+module "diagnostic_mssql_db" {
+  source                         = "github.com/faraday23/terraform-azurerm-monitor-diagnostic-setting.git"
+  storage_account                = var.sa_storage_account
+  sa_resource_group              = var.storage_account_resource_group
+  target_resource_id             = azurerm_mssql_database.db.id
+  target_resource_name           = azurerm_mssql_database.db.name
+  ds_allmetrics_rentention_days  = var.metric
+  
+  ds_log_api_endpoints = { "AutomaticTuning" = var.automatic_tuning,
+  "Blocks"                      = var.blocks,
+  "DatabaseWaitStatistics"      = var.database_wait_statistics,
+  "Deadlocks"                   = var.deadlocks,
+  "Errors"                      = var.error_log, 
+  "Timeouts"                    = var.timeouts,
+  "QueryStoreRuntimeStatistics" = var.query_store_runtime_statistics
+  "QueryStoreWaitStatistics"    = var.query_store_wait_statistics
+  "SQLinsights"                 = var.sql_insights
+  }
+}
+

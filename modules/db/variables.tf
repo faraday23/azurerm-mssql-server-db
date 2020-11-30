@@ -12,6 +12,7 @@ variable "name" {
 variable "server_id" {
   description = "The id of the Ms SQL Server on which to create the database. Changing this forces a new resource to be created."
   type        = string
+  default     = ""
 }
 
 #######
@@ -35,12 +36,12 @@ variable "log_retention_days" {
 ##########
 # Storage 
 ##########
-variable "storage" {
-  description = "Specifies the identifier key of the Threat Detection audit storage account. Required if retention is Enabled."
-  type        = object({ endpoint = string, access_key = string })
+#variable "storage" {
+#  description = "Specifies the identifier key of the Threat Detection audit storage account. Required if retention is Enabled."
+#  type        = object({ endpoint = string, access_key = string })
 
-  default = { "endpoint" = "", "access_key" = "" }
-}
+#  default = { "endpoint" = "", "access_key" = "" }
+#}
 
 variable "collation" {
   description = "Specifies the collation of the database. Changing this forces a new resource to be created."
@@ -86,3 +87,69 @@ variable "read_replica_count" {
   type    = number
   default = 0
 }
+
+##
+# Diagnostic setting variable
+##
+
+variable "sa_storage_account" {
+  description = "This blob storage will hold all Threat Detection audit logs. Required if state is Enabled."
+  type        = string
+  default     = ""
+}
+
+variable "storage_account_resource_group" {
+  description = "Azure resource group where the storage account resides."
+  type        = string
+}
+
+variable "automatic_tuning" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "database_wait_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "query_store_runtime_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "query_store_wait_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "error_log" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "sql_insights" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "deadlocks" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "timeouts" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "metric" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "blocks" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
