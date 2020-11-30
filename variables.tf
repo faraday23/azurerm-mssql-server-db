@@ -123,11 +123,6 @@ variable "sa_storage_account" {
   type        = string
 }
 
-#variable "storage" {
-#  description = "storage account options."
-#  type        = string
-#}
-
 ##
 # Optional Parameters
 ##

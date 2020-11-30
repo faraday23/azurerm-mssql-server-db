@@ -6,20 +6,6 @@ locals {
   replica_enabled  = var.create_mode == "Replica"
 }
 
-resource "random_string" "random" {
-  length  = 8
-  upper   = false
-  special = false
-}
-
-#resource "azurerm_storage_account" "sa" {
-#  name                     = random_string.random.result
-#  resource_group_name      = var.resource_group_name
-#  location                 = var.location
-#  account_tier             = "Standard"
-#  account_replication_type = local.replica_enabled ? "GZRS" : "LRS"
-#}
-
 module "server" {
   count  = local.replica_enabled ? 2 : 1
   source = "../modules/server"
@@ -41,12 +27,6 @@ module "server" {
   log_retention_days = var.log_retention_days
   service_endpoints  = count.index == 0 ? var.service_endpoints : {}
   access_list        = count.index == 0 ? var.access_list : {}
-
-
-  #storage = {
-  #  endpoint     = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_blob_endpoint"]
-  #  access_key   = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_access_key"]
-  #  is_secondary = count.index == 1
 }
 
 
@@ -64,12 +44,10 @@ module "db" {
   read_replica_count = each.value.read_replica_count
   storage_account_resource_group = var.resource_group_name
   sa_storage_account = var.sa_storage_account
-  audit_log_enabled = var.audit_log_enabled
-  server_id           = var.server_id
-
+  audit_log_enabled  = var.audit_log_enabled
+  server_id          = var.server_id
   log_retention_days = var.log_retention_days
-  #storage   = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
-  #storage_endpoint   = var.storage.endpoint
+
   #diagnostic log settings
   automatic_tuning               = var.automatic_tuning
   blocks                         = var.blocks
