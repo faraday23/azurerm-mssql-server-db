@@ -112,6 +112,22 @@ variable "ad_admin_login_name" {
   default     = ""
 }
 
+variable "server_id" {
+  description = "name of server applied to resources"
+  type        = string
+  default     = ""
+}
+
+variable "sa_storage_account" {
+  description = "storage account for diagnostics module"
+  type        = string
+}
+
+#variable "storage" {
+#  description = "storage account options."
+#  type        = string
+#}
+
 ##
 # Optional Parameters
 ##
@@ -267,3 +283,57 @@ variable "database_defaults" {
 locals {
   databases = zipmap(keys(var.databases), [for database in values(var.databases) : merge(var.database_defaults, database)])
 }
+
+# Diagnostic settings
+
+variable "automatic_tuning" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "database_wait_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "query_store_runtime_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "query_store_wait_statistics" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "error_log" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "sql_insights" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "deadlocks" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "timeouts" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "metric" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+variable "blocks" {
+  description = "Retention only applies to storage account. Retention policy ranges from 1 to 365 days. If you do not want to apply any retention policy and retain data forever, set retention (days) to 0."
+  type        = number
+}
+
+

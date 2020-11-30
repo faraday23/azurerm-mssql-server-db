@@ -6,23 +6,30 @@ locals {
   replica_enabled  = var.create_mode == "Replica"
 }
 
-resource "azurerm_storage_account" "sa" {
-  name                     = format("%s%ssa%02s", var.names.product_name, var.names.environment, 1)
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_replication_type = local.replica_enabled ? "GZRS" : "LRS"
+resource "random_string" "random" {
+  length  = 8
+  upper   = false
+  special = false
 }
+
+#resource "azurerm_storage_account" "sa" {
+#  name                     = random_string.random.result
+#  resource_group_name      = var.resource_group_name
+#  location                 = var.location
+#  account_tier             = "Standard"
+#  account_replication_type = local.replica_enabled ? "GZRS" : "LRS"
+#}
 
 module "server" {
   count  = local.replica_enabled ? 2 : 1
-  source = "./modules/server"
+  source = "../modules/server"
 
   suffix              = count.index + 1
   location            = count.index == 0 ? var.location : local.secondary_region
   resource_group_name = var.resource_group_name
   names               = var.names
   tags                = var.tags
+  server_id           = var.server_id
 
   administrator_login = var.administrator_login
   ad_admin_login_name = var.ad_admin_login_name
@@ -36,19 +43,18 @@ module "server" {
   access_list        = count.index == 0 ? var.access_list : {}
 
 
-  storage = {
-    endpoint     = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_blob_endpoint"]
-    access_key   = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_access_key"]
-    is_secondary = count.index == 1
-  }
+  #storage = {
+  #  endpoint     = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_blob_endpoint"]
+  #  access_key   = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_access_key"]
+  #  is_secondary = count.index == 1
 }
+
 
 # SQL Server Database within a SQL Server Server
 module "db" {
   for_each           = local.databases
-  source             = "./modules/db"
+  source             = "../modules/db"
   name               = each.key
-  server_id          = module.server[0].id
   collation          = each.value.collation
   license_type       = each.value.license_type
   sku_name           = each.value.sku_name
@@ -56,11 +62,25 @@ module "db" {
   zone_redundant     = each.value.zone_redundant
   read_scale         = each.value.read_scale
   read_replica_count = each.value.read_replica_count
-
+  storage_account_resource_group = var.resource_group_name
+  sa_storage_account = var.sa_storage_account
   audit_log_enabled = var.audit_log_enabled
+  server_id           = var.server_id
 
   log_retention_days = var.log_retention_days
-  storage            = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
+  #storage   = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
+  #storage_endpoint   = var.storage.endpoint
+  #diagnostic log settings
+  automatic_tuning               = var.automatic_tuning
+  blocks                         = var.blocks
+  database_wait_statistics       = var.database_wait_statistics
+  deadlocks                      = var.deadlocks
+  error_log                      = var.error_log
+  timeouts                       = var.timeouts
+  query_store_runtime_statistics = var.query_store_runtime_statistics
+  query_store_wait_statistics    = var.query_store_wait_statistics
+  sql_insights                   = var.sql_insights
+  metric                         = var.metric
 }
 
 # Azure SQL Failover Group - Default is "false" 
