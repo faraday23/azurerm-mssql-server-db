@@ -32,6 +32,17 @@ variable "log_retention_days" {
   default     = 7
 }
 
+
+##########
+# Storage 
+##########
+#variable "storage" {
+#  description = "Specifies the identifier key of the Threat Detection audit storage account. Required if retention is Enabled."
+#  type        = object({ endpoint = string, access_key = string })
+
+#  default = { "endpoint" = "", "access_key" = "" }
+#}
+
 variable "collation" {
   description = "Specifies the collation of the database. Changing this forces a new resource to be created."
   type        = string
