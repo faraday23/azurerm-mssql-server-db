@@ -6,19 +6,13 @@ locals {
   replica_enabled  = var.create_mode == "Replica"
 }
 
-resource "random_string" "random" {
-  length  = 24
-  upper   = false
-  special = false
+resource "azurerm_storage_account" "sa" {
+  name                     = format("%s%ssa%02s", var.names.product_name, var.names.environment, 1)
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  account_tier             = "Standard"
+  account_replication_type = local.replica_enabled ? "GZRS" : "LRS"
 }
-
-#resource "azurerm_storage_account" "sa" {
-#  name                     = random_string.random.result
-#  resource_group_name      = var.resource_group_name
-#  location                 = var.location
-#  account_tier             = "Standard"
-#  account_replication_type = local.replica_enabled ? "GZRS" : "LRS"
-#}
 
 module "server" {
   count  = local.replica_enabled ? 2 : 1
@@ -41,10 +35,12 @@ module "server" {
   service_endpoints  = count.index == 0 ? var.service_endpoints : {}
   access_list        = count.index == 0 ? var.access_list : {}
 
-  #storage = {
-  #  endpoint     = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_blob_endpoint"]
-  #  access_key   = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_access_key"]
-  #  is_secondary = count.index == 1
+
+  storage = {
+    endpoint     = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_blob_endpoint"]
+    access_key   = azurerm_storage_account.sa["${count.index == 0 ? "primary" : "secondary"}_access_key"]
+    is_secondary = count.index == 1
+  }
 }
 
 # SQL Server Database within a SQL Server Server
@@ -60,24 +56,11 @@ module "db" {
   zone_redundant     = each.value.zone_redundant
   read_scale         = each.value.read_scale
   read_replica_count = each.value.read_replica_count
-  storage_account_resource_group = var.resource_group_name
 
   audit_log_enabled = var.audit_log_enabled
 
   log_retention_days = var.log_retention_days
-  #storage   = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
-  #storage_endpoint   = var.storage.endpoint
-  #diagnostic log settings
-  automatic_tuning               = var.automatic_tuning
-  blocks                         = var.blocks
-  database_wait_statistics       = var.database_wait_statistics
-  deadlocks                      = var.deadlocks
-  error_log                      = var.error_log
-  timeouts                       = var.timeouts
-  query_store_runtime_statistics = var.query_store_runtime_statistics
-  query_store_wait_statistics    = var.query_store_wait_statistics
-  sql_insights                   = var.sql_insights
-  metric                         = var.metric
+  storage            = { endpoint = azurerm_storage_account.sa.primary_blob_endpoint, access_key = azurerm_storage_account.sa.primary_access_key }
 }
 
 # Azure SQL Failover Group - Default is "false" 
