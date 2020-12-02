@@ -49,6 +49,7 @@ module "db" {
   log_retention_days = var.log_retention_days
 
   #diagnostic log settings
+  enable_logs_to_storage         = var.enable_logs_to_storage
   automatic_tuning               = var.automatic_tuning
   blocks                         = var.blocks
   database_wait_statistics       = var.database_wait_statistics
@@ -59,6 +60,7 @@ module "db" {
   query_store_wait_statistics    = var.query_store_wait_statistics
   sql_insights                   = var.sql_insights
   metric                         = var.metric
+  
 }
 
 # Azure SQL Failover Group - Default is "false" 
